@@ -23,8 +23,8 @@
                 </div>
                 <div class="flex flex-row space-x-2  w-full px-2 items-center">
 
-                    <span for="clothing_name" class="text-gray-700 w-44"> Size </span>
-                    <input v-model="newItem.clothing_name"
+                    <span for="size" class="text-gray-700 w-44"> Size </span>
+                    <input v-model="newItem.size"
                         class="w-full  mb-4 md:mb-0 p-2  mt-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
                         placeholder="cloth size" required />
                 </div>
@@ -53,20 +53,36 @@
 
         <div>
             <h1>Clothes List</h1>
-            <ul v-if="clothes.length">
-                <li v-for="cloth in clothes" :key="cloth.id">
-                    {{ cloth.name }}
-                    {{ cloth.color }}
-                    {{ cloth.size }}
-                    {{ cloth.category }}
-                    {{ cloth.image }}
-                    <button @click="deleteCloth">Delete</button>
-                    <button @click="editCloth">Edit</button>
-
-                </li>
-            </ul>
+            <table v-if="clothes.length">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Color</th>
+                        <th>Size</th>
+                        <th>Category</th>
+                        <th>Image</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="cloth in clothes" :key="cloth.id">
+                        <td>{{ cloth.name }}</td>
+                        <td>{{ cloth.color }}</td>
+                        <td>{{ cloth.size }}</td>
+                        <td>{{ cloth.category }}</td>
+                        <td>
+                            <img :src="cloth.image" alt="Cloth Image" width="50" height="50" />
+                        </td>
+                        <td>
+                            <button @click="deleteCloth(cloth.id)">Delete</button>
+                            <button @click="editCloth(cloth.id)">Edit</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
             <p v-else>No clothes found.</p>
         </div>
+
 
 
     </div>
