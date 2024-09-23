@@ -20,7 +20,6 @@
 
 <script>
 import axios from 'axios';
-// import { useRouter } from 'vue-router';
 
 export default {
     data() {
@@ -39,12 +38,9 @@ export default {
                 });
                 localStorage.setItem('token', response.token); // Store token for later use
                 // Redirect or update UI after login
-                this.$router.push('/clothlist');
-                // const router = useRouter();
-                // router.push({ name: 'ClothList' });
+                this.$router.push('/clothes');
             } catch (error) {
                 this.error = error;
-                // this.error = error.response.message;
             }
         },
     },
