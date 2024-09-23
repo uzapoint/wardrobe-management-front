@@ -20,6 +20,7 @@
 
 <script>
 import axios from 'axios';
+// import { useRouter } from 'vue-router';
 
 export default {
     data() {
@@ -36,10 +37,14 @@ export default {
                     email: this.email,
                     password: this.password,
                 });
-                localStorage.setItem('token', response.data.token); // Store token for later use
+                localStorage.setItem('token', response.token); // Store token for later use
                 // Redirect or update UI after login
+                this.$router.push('/clothlist');
+                // const router = useRouter();
+                // router.push({ name: 'ClothList' });
             } catch (error) {
-                this.error = error.response.data.message;
+                this.error = error;
+                // this.error = error.response.message;
             }
         },
     },

@@ -25,6 +25,7 @@
 
 <script>
 import axios from 'axios';
+// import { useRouter } from 'vue-router';
 
 export default {
     data() {
@@ -45,10 +46,17 @@ export default {
                     password: this.password,
                     password_confirmation: this.password_confirmation,
                 });
-                localStorage.setItem('token', response.data.token); // Store token for later use
-                // Redirect or update UI after registration
+                localStorage.setItem('token', response.token); // Store token for later use
+                // Redirect to clothlist page
+                this.$router.push('/clothlist');
+
+                // const router = useRouter();
+                // router.push({ name: 'ClothList' });
+
+                this.error = null; // Clear error message after successful registration
             } catch (error) {
-                this.error = error.response.data.message;
+                this.error = error;
+                // this.error = error.response.message;
             }
         },
     },
