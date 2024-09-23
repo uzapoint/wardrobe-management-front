@@ -1,13 +1,26 @@
 <template>
-  <router-view :key="route.fullPath" />
+  <router-view />
 </template>
 
-<script setup>
-import { useRoute } from 'vue-router'; // Import useRoute from vue-router
+<style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
 
-const route = useRoute(); // Get the current route object
-</script>
+nav {
+  padding: 30px;
+}
 
-<style lang="css">
-/* Add your styles here if needed */
+nav a {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+nav a.router-link-exact-active {
+  color: #42b983;
+}
 </style>
