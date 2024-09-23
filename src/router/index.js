@@ -1,11 +1,11 @@
 import { createWebHistory, createRouter } from "vue-router"
-import Cloth from "@/components/clothes.vue";
+import ClothItem from "@/components/ClothItem.vue";
 
 
 const routes = [
   //login
-  { path: "/", component: Cloth, meta: { title: 'Cloth' } },
-  { path: "/clothes", component: Cloth, meta: { title: 'Cloth' } },
+  { path: "/", component: ClothItem, meta: { title: 'clothes' } },
+  { path: "/clothes", component: ClothItem, meta: { title: 'clothes' } },
  
 ] 
 
