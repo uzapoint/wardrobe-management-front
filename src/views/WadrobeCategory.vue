@@ -8,10 +8,19 @@ let wadrobes = ref([]);
 localStorage.removeItem('categoryName');
 let token = localStorage.getItem('token'); // Assuming you store the token in localStorage
 let wadrobe_id = localStorage.getItem('wadrobe_id');
-let wadrobename = localStorage.getItem('wadrobe_name');
+let wadrobeName = localStorage.getItem('wadrobe_name');
+let isEditing = ref(false);
+let currentWadrobeCategoryId = ref(null);
+let wadrobeCategoryName = ref('');
 // Mounted lifecycle hook
 onMounted(async () => {
-  try {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    await fetchWadrobesCategories();
+});
+
+// Function to fetch all wadrobes
+const fetchWadrobesCategories = async () => {
+    try {
     // Set the Authorization header with the token
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
@@ -25,7 +34,55 @@ onMounted(async () => {
   } catch (error) {
     console.error(error.response ? error.response.data : error.message);
   }
-});
+};
+
+// Function to handle form submission for adding/updating a wadrobecategories
+const handleSubmit = async () => {
+  if (isEditing.value) {
+    // Update existing wadrobe
+    try {
+      await axios.put(`/wadrobe_categories/${currentWadrobeCategoryId.value}`, { description: wadrobeCategoryName.value,  wadrobe_id: wadrobe_id  });
+      await fetchWadrobesCategories(); // Refresh the list after update
+      resetForm();
+    } catch (error) {
+      console.error(error.response ? error.response.data : error.message);
+    }
+  } else {
+    // Add new wadrobe
+    try {
+      await axios.post('/wadrobe_categories', { description: wadrobeCategoryName.value, wadrobe_id: wadrobe_id });
+      await fetchWadrobesCategories(); // Refresh the list after adding
+      resetForm();
+    } catch (error) {
+      console.error(error.response ? error.response.data : error.message);
+    }
+  }
+};
+
+// Function to set form for editing a wadrobe
+const editWadrobe = (wadrobe) => {
+    wadrobeCategoryName.value = wadrobe.description;
+  isEditing.value = true;
+  currentWadrobeCategoryId.value = wadrobe.id;
+};
+
+// Function to remove a wadrobe
+const removeWadrobe = async (wadrobeId) => {
+  try {
+    await axios.delete(`/wadrobe_categories/${wadrobeId}`);
+    await fetchWadrobesCategories(); // Refresh the list after deletion
+  } catch (error) {
+    console.error(error.response ? error.response.data : error.message);
+  }
+};
+
+// Function to reset form fields
+const resetForm = () => {
+    wadrobeCategoryName.value = '';
+  isEditing.value = false;
+  currentWadrobeCategoryId.value = null;
+};
+
 
 const router = useRouter();
 
@@ -40,9 +97,22 @@ const goToClothing = (categoryId, categoryName) => {
 };
 </script>
 <template>
-    <h1>{{ wadrobename }}</h1>  
+    <h1>{{ wadrobeName }}</h1>  
   <main class="container flex items-center h-screen mx-auto">
     <div class="flex flex-col">
+         <!-- Form to Add/Edit Wadrobes -->
+      <form @submit.prevent="handleSubmit" class="mb-4">
+        <input
+          type="text"
+          v-model="wadrobeCategoryName"
+          placeholder="Wadrobe Categor Name"
+          required
+          class="border rounded px-2 py-1"
+        />
+        <button type="submit" class="ml-2 bg-blue-500 text-white rounded px-4 py-1">
+          {{ isEditing ? 'Update Wadrobe Category' : 'Add Wadrobe Category' }}
+        </button>
+      </form>
       <div class="overflow-x-auto">
         <div class="p-1.5 w-full inline-block align-middle">
           <div class="overflow-hidden border rounded-lg">
@@ -81,6 +151,10 @@ const goToClothing = (categoryId, categoryName) => {
                   </td>
                   <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
                     {{ wadrobe.created_at }}
+                  </td>
+                  <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap flex justify-center">
+                    <button @click.stop="editWadrobe(wadrobe)" class="bg-yellow-500 text-white rounded px-2 py-1 mr-2">Edit</button>
+                    <button @click.stop="removeWadrobe(wadrobe.id)" class="bg-red-500 text-white rounded px-2 py-1">Remove</button>
                   </td>
                 </tr>
               </tbody>

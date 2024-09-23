@@ -8,10 +8,19 @@ let wadrobes = ref([]);
 let token = localStorage.getItem('token'); // Assuming you store the token in localStorage
 let category_id = localStorage.getItem('category_id');
 let categoryName = localStorage.getItem('categoryName');
-let wadrobename = localStorage.getItem('wadrobe_name');
+let wadrobeName = localStorage.getItem('wadrobe_name');
+let wadrobe_id = localStorage.getItem('wadrobe_id');
+let clothingName = ref('');
+let isEditing = ref(false);
+let currentClothingId = ref(null);
 // Mounted lifecycle hook
 onMounted(async () => {
-  try {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    await fetchClothing();
+});
+
+const fetchClothing = async() =>{
+    try {
     // Set the Authorization header with the token
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
@@ -25,7 +34,53 @@ onMounted(async () => {
   } catch (error) {
     console.error(error.response ? error.response.data : error.message);
   }
-});
+}
+
+const handleSubmit = async () => {
+  if (isEditing.value) {
+    // Update existing wadrobe
+    try {
+      await axios.put(`/wadrobe_categories_clothing/${currentClothingId.value}`, { description: wadrobeName.value,  wadrobe_clothing_category_id: category_id, wadrobe_id: wadrobe_id });
+      await fetchClothing(); // Refresh the list after update
+      resetForm();
+    } catch (error) {
+      console.error(error.response ? error.response.data : error.message);
+    }
+  } else {
+    // Add new wadrobe
+    try {
+      await axios.post('/wadrobe_categories_clothing', { description: wadrobeName.value,  wadrobe_clothing_category_id: category_id, wadrobe_id: wadrobe_id });
+      await fetchClothing(); // Refresh the list after adding
+      resetForm();
+    } catch (error) {
+      console.error(error.response ? error.response.data : error.message);
+    }
+  }
+};
+
+// Function to set form for editing a wadrobe
+const editClothing = (wadrobe) => {
+    clothingName.value = wadrobe.description;
+  isEditing.value = true;
+  currentClothingId.value = wadrobe.id;
+};
+
+// Function to remove a wadrobe
+const removeClothing= async (wadrobeId) => {
+  try {
+    await axios.delete(`/wadrobe_categories_clothing/${wadrobeId}`);
+    await fetchClothing(); // Refresh the list after deletion
+  } catch (error) {
+    console.error(error.response ? error.response.data : error.message);
+  }
+};
+
+// Function to reset form fields
+const resetForm = () => {
+    clothingName.value = '';
+  isEditing.value = false;
+  currentClothingId.value = null;
+};
 
 //const router = useRouter();
 
@@ -39,9 +94,21 @@ const goToClothing = (wadrobeId) => {
 };
 </script>
 <template>
-    <h1>{{wadrobename}} / {{ categoryName }}</h1>  
+    <h1>{{wadrobeName}} / {{ categoryName }}</h1>  
   <main class="container flex items-center justify-center h-screen mx-auto">
     <div class="flex flex-col">
+        <form @submit.prevent="handleSubmit" class="mb-4">
+        <input
+          type="text"
+          v-model="clothingName"
+          placeholder="Wadrobe Name"
+          required
+          class="border rounded px-2 py-1"
+        />
+        <button type="submit" class="ml-2 bg-blue-500 text-white rounded px-4 py-1">
+          {{ isEditing ? 'Update Wadrobe' : 'Add Wadrobe' }}
+        </button>
+      </form>
       <div class="overflow-x-auto">
         <div class="p-1.5 w-full inline-block align-middle">
           <div class="overflow-hidden border rounded-lg">
@@ -66,6 +133,12 @@ const goToClothing = (wadrobeId) => {
                   >
                     Created At
                   </th>
+                  <th
+                    scope="col"
+                    class="px-6 py-3 text-xs font-bold text-center text-gray-500 uppercase"
+                  >
+                    Action
+                  </th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-gray-200">
@@ -80,6 +153,10 @@ const goToClothing = (wadrobeId) => {
                   </td>
                   <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
                     {{ wadrobe.created_at }}
+                  </td>
+                  <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap flex justify-center">
+                    <button @click.stop="editClothing(wadrobe)" class="bg-yellow-500 text-white rounded px-2 py-1 mr-2">Edit</button>
+                    <button @click.stop="removeClothing(wadrobe.id)" class="bg-red-500 text-white rounded px-2 py-1">Remove</button>
                   </td>
                 </tr>
               </tbody>
