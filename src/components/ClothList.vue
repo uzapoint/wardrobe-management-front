@@ -1,9 +1,6 @@
 <template>
 
     <div class="flex flex-col items-center p-4 md:p-8 bg-gray-50 min-h-screen">
-        <div>
-            <img alt="Vue logo" src="src/assets/wardrobe.png" height="100px;">
-        </div>
 
         <!-- Add Clothing Item Form -->
         <h2 class="text-2xl font-semibold text-gray-700 mb-4">Add Clothing Item</h2>
