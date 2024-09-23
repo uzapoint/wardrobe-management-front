@@ -3,12 +3,17 @@
     <h1>Clothes List</h1>
     <ul v-if="clothes.length">
       <li v-for="cloth in clothes" :key="cloth.id">
-        {{ cloth.name }} - {{ cloth.type }}
+        {{ cloth.name }} 
+        {{ cloth.color }} 
+        {{ cloth.size }} 
+        {{ cloth.category }}
+        {{ cloth.id }}  <button @click="editCloth">Edit</button>
+        
       </li>
     </ul>
     <p v-else>No clothes found.</p>
   </div>
-  <!-- create a form and submit a new clothe-->
+  <!-- submit a new clothe-->
 <form @submit.prevent="submitCloth">
   <input type="text" v-model="newCloth.name" placeholder="Cloth name" required>
   <input type="text" v-model="newCloth.category" placeholder="Cloth type" required>
@@ -16,8 +21,16 @@
   <input type="text" v-model="newCloth.size" placeholder="Cloth size" required>
   <button type="submit">Add Cloth</button>
 </form>
-
-
+<!-- edit a clothe added -->
+  <form @submit.prevent="editCloth">
+  <input type="text" v-model="newCloth.name" placeholder="Cloth name" required>
+  <input type="text" v-model="newCloth.category" placeholder="Cloth type" required>
+  <input type="text" v-model="newCloth.color" placeholder="Cloth color" required>
+  <input type="text" v-model="newCloth.size" placeholder="Cloth size" required>
+  <button type="submit">Edit Cloth</button>
+</form>
+<!-- delete a clothe f-->
+ 
 </template>
 
 
@@ -62,7 +75,22 @@ export default {
         .catch(error => {
           console.error('There was an error!', error);
         });
-    }
+    },
+      editCloth() {
+        // Post request to the backend
+        axios.put('http://127.0.0.1:8000/clothes', this.newCloth)
+          .then(response => {
+            console.log(response.data);
+            this.clothes.push(response.data); // Add new cloth to the clothes array
+            this.newCloth = {}; // Clear the form
+          })
+          .catch(error => {
+            console.error('There was an error!', error);
+          });
+
+    },
+
+
   }
 }
 
