@@ -66,7 +66,7 @@ export default {
             }
           });
         }
-        this.$router.push('/');
+        this.$router.push('/clothes');
       } catch (error) {
         console.error('Error:', error.response?.data || error.message);
       }

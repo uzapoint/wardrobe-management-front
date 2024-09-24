@@ -54,7 +54,7 @@ export default {
     },
     deleteCloth(id) {
       if (confirm('Are you sure you want to delete this item?')) {
-        axios.delete(`/api/clothes/${id}`)
+        axios.delete(`http://wardrobe-management-system.test:8000/api/clothes/${id}`)
           .then(() => {
             this.getClothes();
           });
