@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-expand navbar-dark bg-dark">
-      <a href="/" class="navbar-brand">Wardrobe Management System</a>
-      <div class="navbar-nav mr-auto">
+    <nav class="navbar navbar-expand navbar-dark bg-primary" v-if="currentUser">
+      <a href="/" class="navbar-brand font-size-3">Wardrobe Management System</a>
+      <div class="navbar-nav mr-auto" >
         <li class="nav-item">
           <router-link to="/home" class="nav-link">
             <font-awesome-icon icon="home" /> Home
@@ -60,19 +60,6 @@
 import Vuex from "vuex";
 
 export default  new Vuex.Store({
-  state: {
-    auth: {
-      user: null, // Initialize as null or an empty object
-    },
-  },
-  mutations: {
-    SET_USER(state, user) {
-      state.auth.user = user;
-    },
-    LOGOUT(state) {
-      state.auth.user = null; // Reset on logout
-    },
-  },
   computed: {
     currentUser() {
       return this.$store.state.auth.user;

@@ -9,9 +9,9 @@
       <Form @submit="handleRegister" :validation-schema="schema">
         <div v-if="!successful">
           <div class="form-group">
-            <label for="username">Username</label>
-            <Field name="username" type="text" class="form-control" />
-            <ErrorMessage name="username" class="error-feedback" />
+            <label for="name">User Full name</label>
+            <Field name="name" type="text" class="form-control" />
+            <ErrorMessage name="name" class="error-feedback" />
           </div>
           <div class="form-group">
             <label for="email">Email</label>
@@ -19,12 +19,31 @@
             <ErrorMessage name="email" class="error-feedback" />
           </div>
           <div class="form-group">
+            <label for="phone_number">Phone Number</label>
+            <Field name="phone_number" type="tel" class="form-control" />
+            <ErrorMessage name="phone_number" class="error-feedback" />
+          </div>
+          <div class="form-group">
             <label for="password">Password</label>
             <Field name="password" type="password" class="form-control" />
             <ErrorMessage name="password" class="error-feedback" />
           </div>
-
           <div class="form-group">
+            <label for="cpassword">Confirm Password</label>
+            <Field name="cpassword" type="password" class="form-control" />
+            <ErrorMessage name="cpassword" class="error-feedback" />
+          </div>
+          <div class="form-group">
+            <label for="gender">Gender</label>
+            <Field as="select" name="gender" class="form-control">
+              <option value="" disabled>Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </Field>
+            <ErrorMessage name="gender" class="error-feedback" />
+          </div>
+
+          <div class="form-group mt-3">
             <button class="btn btn-primary btn-block" :disabled="loading">
               <span
                   v-show="loading"
@@ -32,6 +51,15 @@
               ></span>
               Sign Up
             </button>
+
+            <div class="ml-auto mt-4 mb-3">
+          <span class="text-secondary">
+           Have an account?
+          </span>
+              <router-link to="/login" class="nav-link text-primary">
+                <font-awesome-icon icon="user-plus" /> Sign In
+              </router-link>
+            </div>
           </div>
         </div>
       </Form>
@@ -60,23 +88,22 @@ export default {
   },
   data() {
     const schema = yup.object().shape({
-      username: yup
+      name: yup.string().required("Full name is required!"),
+      email: yup.string().required("Email is required!").email("Email is invalid!"),
+      phone_number: yup
           .string()
-          .required("Username is required!")
-          .min(3, "Must be at least 3 characters!")
-          .max(20, "Must be maximum 20 characters!"),
-      email: yup
-          .string()
-          .required("Email is required!")
-          .email("Email is invalid!")
-          .max(50, "Must be maximum 50 characters!"),
+          .required("Phone number is required!")
+          .matches(/^\d+$/, "Phone number must contain only digits"),
       password: yup
           .string()
           .required("Password is required!")
-          .min(6, "Must be at least 6 characters!")
-          .max(40, "Must be maximum 40 characters!"),
+          .min(6, "Must be at least 6 characters!"),
+      cpassword: yup
+          .string()
+          .required("Confirm password is required!")
+          .oneOf([yup.ref("password"), null], "Passwords must match"),
+      gender: yup.string().required("Gender is required!"),
     });
-
     return {
       successful: false,
       loading: false,
@@ -105,12 +132,13 @@ export default {
             this.message = data.message;
             this.successful = true;
             this.loading = false;
+            if (this.successful) {
+              this.$router.push("/login");
+            }
           },
           (error) => {
             this.message =
-                (error.response &&
-                    error.response.data &&
-                    error.response.data.message) ||
+                (error.response && error.response.data && error.response.data.message) ||
                 error.message ||
                 error.toString();
             this.successful = false;

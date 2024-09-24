@@ -1,16 +1,18 @@
 <template>
   <div class="col-md-12">
-    <div class="card card-container">
+
+    <div class="card card-container mt-4">
       <img
           id="profile-img"
           src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
           class="profile-img-card"
       />
       <Form @submit="handleLogin" :validation-schema="schema">
+        <a href="/" class="navbar-brand font-size-3 mt-1 mb-1 text-primary text-capitalize">Wardrobe Management System</a>
         <div class="form-group">
-          <label for="username">Username</label>
-          <Field name="username" type="text" class="form-control" />
-          <ErrorMessage name="username" class="error-feedback" />
+          <label for="email">email</label>
+          <Field name="email" type="text" class="form-control" />
+          <ErrorMessage name="email" class="error-feedback" />
         </div>
         <div class="form-group">
           <label for="password">Password</label>
@@ -18,7 +20,7 @@
           <ErrorMessage name="password" class="error-feedback" />
         </div>
 
-        <div class="form-group">
+        <div class="form-group mt-3 mb-2">
           <button class="btn btn-primary btn-block" :disabled="loading">
             <span
                 v-show="loading"
@@ -32,6 +34,14 @@
           <div v-if="message" class="alert alert-danger" role="alert">
             {{ message }}
           </div>
+        </div>
+        <div class="ml-auto mt-4 mb-3">
+          <span class="text-secondary">
+            Don't have an account?
+          </span>
+          <router-link to="/register" class="nav-link text-primary">
+            <font-awesome-icon icon="user-plus" /> Sign Up
+          </router-link>
         </div>
       </Form>
     </div>
@@ -51,7 +61,7 @@ export default {
   },
   data() {
     const schema = yup.object().shape({
-      username: yup.string().required("Username is required!"),
+      email: yup.string().required("email is required!"),
       password: yup.string().required("Password is required!"),
     });
 
@@ -132,5 +142,3 @@ label {
   color: red;
 }
 </style>
-
-

@@ -3,9 +3,8 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {FontAwesomeIcon} from "@/plugins/font-awesome";
-import {store} from "core-js/internals/reflect-metadata";
 import axios from "axios";
-import {createMemoryHistory, createRouter} from "vue-router";
+import { createRouter, createWebHistory} from "vue-router";
 import HomePage from "@/components/HomePage.vue";
 import LoginPage from "@/components/auth/LoginPage.vue";
 import RegisterPage from "@/components/auth/RegisterPage.vue";
@@ -13,6 +12,7 @@ import ProfilePage from "@/components/auth/ProfilePage.vue";
 import CategoryPage from "@/views/CategoryPage.vue";
 import SizePage from "@/views/SizePage.vue";
 import ClothesPage from "@/views/ClothesPage.vue";
+import store from "@/store/ index";
 
 
 const routes = [
@@ -58,7 +58,7 @@ const routes = [
 axios.defaults.baseURL = "http://localhost:8003/api/";
 
 const router = createRouter({
-    history: createMemoryHistory(),
+    history: createWebHistory(),
     routes,
 });
 
