@@ -77,8 +77,8 @@ export default {
 		create(token, data) {
 			return makePostRequest(`${REST_API_URL}/items`, data, token);
 		},
-		update(token, data) {
-			return makePostRequest(`${REST_API_URL}/items`, data, token);
+		update(token, id, data) {
+			return makePostRequest(`${REST_API_URL}/items/${id}`, data, token);
 		},
 		delete(token, id) {
 			return makeDeleteRequest(`${REST_API_URL}/items/${id}`, token);
