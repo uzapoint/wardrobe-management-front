@@ -1,7 +1,7 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark>
-      <v-toolbar-title>My Application</v-toolbar-title>
+    <v-app-bar app color="primary" dark height="100">
+      <v-toolbar-title></v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn @click="showCreateUserDialog" color="secondary" class="mr-2"
         >Create User</v-btn
@@ -35,18 +35,8 @@ export default {
     showCreateUserDialog() {
       this.createUserDialog = true;
     },
-    addUser() {
-      // Logic for adding a user
-      console.log("Add User button clicked");
-    },
-    createUser() {
-      // Logic for creating a user
-      console.log("Create User button clicked");
-    },
   },
 };
 </script>
 
-<style scoped>
-/* Custom styles can go here */
-</style>
+<style scoped></style>
