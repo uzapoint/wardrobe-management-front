@@ -55,15 +55,41 @@ export const useAuthStore = defineStore("auth", {
 export const useItemStore = defineStore("items", {
 	state: () => {
 		return {
+			item: null,
 			items: [],
 		};
 	},
 	actions: {
-		addProduct(product) {
-			this.items.push(product);
+		async getItems() {
+			const auth = useAuthStore();
+			const items = await api.items.filter(auth.token);
+			this.items = items;
 		},
-		removeProduct(product) {
-			this.items = this.items.filter((item) => item.id !== product.id);
+		async getItem() {
+			const auth = useAuthStore();
+			const item = await api.items.get(auth.token);
+			this.item = item;
+		},
+		async createItem(data) {
+			const auth = useAuthStore();
+			const item = await api.items.create(auth.token, data);
+			if (item) {
+				this.getItems();
+			}
+		},
+		async updateItem(id, data) {
+			const auth = useAuthStore();
+			const item = await api.items.update(auth.token, id, data);
+			if (item) {
+				this.getItems();
+			}
+		},
+		async deleteItem(id) {
+			const auth = useAuthStore();
+			const item = await api.items.delete(auth.token, id);
+			if (item) {
+				this.getItems();
+			}
 		},
 	},
 });
