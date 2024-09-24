@@ -79,7 +79,7 @@ router.beforeEach((to) => {
 	const auth = useAuthStore();
 
 	if (to.meta.requiresAuth && !auth.isLoggedIn) return "/auth/login";
-	if (to.meta.requiresVerified && auth.isVerified)
+	if (to.meta.requiresVerified && !auth.isVerified)
 		return "/auth/resend-verfication-email";
 	if (to.meta.requiresGuest && auth.isLoggedIn) return "/";
 });
