@@ -10,7 +10,7 @@ import ResendVerificationEmail from "./pages/ResendVerificationEmail.vue";
 import VerifyEmail from "./pages/VerifyEmail.vue";
 import HomePAge from "./pages/HomePage.vue";
 import ItemPage from "./pages/ItemPage.vue";
-
+import "./main.css";
 const app = createApp(App);
 
 const pinia = createPinia();
