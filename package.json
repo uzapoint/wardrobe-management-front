@@ -3,9 +3,9 @@
   "version": "",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "npm run serve:tailwindcss && vue-cli-service serve",
     "serve:tailwindcss": "tailwindcss -i ./src/base.css -o ./src/main.css --watch",
-    "build": "vue-cli-service build",
+    "build": "tailwindcss -i ./src/base.css -o ./src/main.css && vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
