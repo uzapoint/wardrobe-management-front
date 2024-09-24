@@ -1,26 +1,52 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <v-app>
+    <v-app-bar app color="primary" dark>
+      <v-toolbar-title>My Application</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-btn @click="showCreateUserDialog" color="secondary" class="mr-2"
+        >Create User</v-btn
+      >
+      <v-btn @click="showDialog" color="secondary">Add Clothes</v-btn>
+    </v-app-bar>
+    <v-main>
+      <router-view />
+    </v-main>
+    <add-clothes v-model="dialog" />
+    <create-user v-model="createUserDialog" />
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import CreateUser from "./components/CreateUser.vue";
+import addClothes from "./components/addClothes.vue";
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  data() {
+    return {
+      dialog: false,
+      createUserDialog: false,
+    };
+  },
+  components: { addClothes, CreateUser },
+  name: "App",
+  methods: {
+    showDialog() {
+      this.dialog = true;
+    },
+    showCreateUserDialog() {
+      this.createUserDialog = true;
+    },
+    addUser() {
+      // Logic for adding a user
+      console.log("Add User button clicked");
+    },
+    createUser() {
+      // Logic for creating a user
+      console.log("Create User button clicked");
+    },
+  },
+};
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style scoped>
+/* Custom styles can go here */
 </style>
