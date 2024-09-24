@@ -9,7 +9,7 @@ const router = useRouter();
 itemStore.getItems();
 
 const onNew = () => {
-  router.push("/item/new");
+  router.push("/items/new");
 };
 
 const onPrev = () => {

@@ -10,6 +10,8 @@ import ResendVerificationEmail from "./pages/ResendVerificationEmail.vue";
 import VerifyEmail from "./pages/VerifyEmail.vue";
 import HomePAge from "./pages/HomePage.vue";
 import ItemPage from "./pages/ItemPage.vue";
+import EditItemPage from "./pages/EditItemPage.vue";
+import CreateItemPage from "./pages/CreateItemPage.vue";
 import "./main.css";
 const app = createApp(App);
 
@@ -62,8 +64,24 @@ const routes = [
 		},
 	},
 	{
-		path: "/:id",
+		path: "/items/:id",
 		component: ItemPage,
+		meta: {
+			requiresAuth: true,
+			requiresVerified: true,
+		},
+	},
+	{
+		path: "/items/new",
+		component: CreateItemPage,
+		meta: {
+			requiresAuth: true,
+			requiresVerified: true,
+		},
+	},
+	{
+		path: "/items/:id/edit",
+		component: EditItemPage,
 		meta: {
 			requiresAuth: true,
 			requiresVerified: true,

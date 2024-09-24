@@ -39,6 +39,23 @@ const makePostRequest = async (url, data = {}, token = null) => {
 	}
 };
 
+const makePutRequest = async (url, data = {}, token = null) => {
+	try {
+		const headers = {
+			Accept: "application/json",
+		};
+		if (token) {
+			headers["Authorization"] = `Bearer ${token}`;
+		}
+
+		let response = await axios.put(url, data, { headers });
+		return response.data;
+	} catch (error) {
+		console.log(error);
+		return false;
+	}
+};
+
 const makeDeleteRequest = async (url, token) => {
 	try {
 		const headers = {
@@ -79,7 +96,7 @@ export default {
 			return makePostRequest(`${REST_API_URL}/items`, data, token);
 		},
 		update(token, id, data) {
-			return makePostRequest(`${REST_API_URL}/items/${id}`, data, token);
+			return makePutRequest(`${REST_API_URL}/items/${id}`, data, token);
 		},
 		delete(token, id) {
 			return makeDeleteRequest(`${REST_API_URL}/items/${id}`, token);

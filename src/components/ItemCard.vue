@@ -8,8 +8,8 @@ const itemStore = useItemStore();
 const props = defineProps(["item"]);
 const router = useRouter();
 
-const onView = () => router.push(`/item/${props.item.id}`);
-const onEdit = () => router.push(`/item/${props.item.id}/edit`);
+const onView = () => router.push(`/items/${props.item.id}`);
+const onEdit = () => router.push(`/items/${props.item.id}/edit`);
 const onDelete = () => {
   itemStore.deleteItem(props.item.id);
 };

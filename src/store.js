@@ -65,9 +65,9 @@ export const useItemStore = defineStore("items", {
 			const items = await api.items.filter(auth.token, { page });
 			this.items = items;
 		},
-		async getItem() {
+		async getItem(id) {
 			const auth = useAuthStore();
-			const item = await api.items.get(auth.token);
+			const item = await api.items.get(auth.token, id);
 			this.item = item;
 		},
 		async createItem(data) {
@@ -82,6 +82,7 @@ export const useItemStore = defineStore("items", {
 			const item = await api.items.update(auth.token, id, data);
 			if (item) {
 				this.getItems();
+				this.getItem(id);
 			}
 		},
 		async deleteItem(id) {
@@ -89,6 +90,7 @@ export const useItemStore = defineStore("items", {
 			const item = await api.items.delete(auth.token, id);
 			if (item) {
 				this.getItems();
+				this.getItem(id);
 			}
 		},
 	},
