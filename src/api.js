@@ -1,0 +1,87 @@
+import axios from "axios";
+
+const REST_API_URL = "http://localhost:8000/api";
+
+const makeGetRequest = async (url, token = null) => {
+	const headers = {
+		Accept: "application/json",
+	};
+	if (token) {
+		headers["Authorization"] = `Bearer ${token}`;
+	}
+	try {
+		const response = await axios.get(url, {
+			headers,
+		});
+
+		return response.data;
+	} catch (error) {
+		console.log(error);
+		return false;
+	}
+};
+
+const makePostRequest = async (url, data = {}, token = null) => {
+	try {
+		const headers = {
+			Accept: "application/json",
+		};
+		if (token) {
+			headers["Authorization"] = `Bearer ${token}`;
+		}
+
+		let response = await axios.post(url, data, { headers });
+		return response.data;
+	} catch (error) {
+		console.log(error);
+		return false;
+	}
+};
+
+const makeDeleteRequest = async (url, token) => {
+	try {
+		const headers = {
+			Accept: "application/json",
+		};
+		if (token) {
+			headers["Authorization"] = `Bearer ${token}`;
+		}
+		let response = await axios.delete(url, { headers });
+		return response.data;
+	} catch (error) {
+		console.log(error);
+		return false;
+	}
+};
+
+export default {
+	auth: {
+		login(email, password) {
+			return makePostRequest(`${REST_API_URL}/sanctum/token`, {
+				email,
+				password,
+				device_name: "web",
+			});
+		},
+		getUser(token) {
+			return makeGetRequest(`${REST_API_URL}/user`, token);
+		},
+	},
+	items: {
+		filter(token) {
+			return makeGetRequest(`${REST_API_URL}/items`, token);
+		},
+		get(token, id) {
+			return makeGetRequest(`${REST_API_URL}/items/${id}`, token);
+		},
+		create(token, data) {
+			return makePostRequest(`${REST_API_URL}/items`, data, token);
+		},
+		update(token, data) {
+			return makePostRequest(`${REST_API_URL}/items`, data, token);
+		},
+		delete(token, id) {
+			return makeDeleteRequest(`${REST_API_URL}/items/${id}`, token);
+		},
+	},
+};

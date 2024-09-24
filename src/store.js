@@ -1,7 +1,5 @@
-import axios from "axios";
 import { defineStore } from "pinia";
-
-const REST_API_URL = "http://localhost:8000/api";
+import api from "./api";
 
 export const useAuthStore = defineStore("auth", {
 	state: () => {
@@ -29,18 +27,43 @@ export const useAuthStore = defineStore("auth", {
 	},
 	actions: {
 		async login(email, password) {
-			const response = await axios.post(`${REST_API_URL}/login`, {
-				email,
-				password,
-			});
+			const { token } = await api.auth.login(email, password);
 
-			return response.data;
+			localStorage.setItem("token", token);
+
+			this.token = token;
+
+			const user = await api.auth.getUser(token);
+
+			if (!user) return false;
+
+			localStorage.setItem("user", JSON.stringify(user));
+
+			this.user = user;
+
+			return user;
 		},
 		logout() {
 			localStorage.removeItem("token");
 			localStorage.removeItem("user");
 			this.user = null;
 			this.token = null;
+		},
+	},
+});
+
+export const useItemStore = defineStore("items", {
+	state: () => {
+		return {
+			items: [],
+		};
+	},
+	actions: {
+		addProduct(product) {
+			this.items.push(product);
+		},
+		removeProduct(product) {
+			this.items = this.items.filter((item) => item.id !== product.id);
 		},
 	},
 });
