@@ -7,29 +7,35 @@ import Vuex from 'vuex';
 export default new Vuex.Store({
   state: {
     user: null,
+    token: localStorage.getItem('token') || ''
   },
   mutations: {
-    setUser(state, user) {
+    SET_USER(state, user) {
       state.user = user;
     },
-    clearUser(state) {
+    SET_TOKEN(state, token) {
+      state.token = token;
+      localStorage.setItem('token', token);
+    },
+    LOGOUT(state) {
       state.user = null;
+      state.token = '';
+      localStorage.removeItem('token');
     }
   },
   actions: {
     setUser({ commit }, user) {
-      commit('setUser', user);
+      commit('SET_USER', user);
     },
-    clearUser({ commit }) {
-      commit('clearUser');
+    setToken({ commit }, token) {
+      commit('SET_TOKEN', token);
+    },
+    logout({ commit }) {
+      commit('LOGOUT');
     }
   },
   getters: {
-    isAuthenticated(state) {
-      return !!state.user;
-    },
-    getUser(state) {
-      return state.user;
-    }
+    isAuthenticated: state => !!state.token,
+    getUser: state => state.user
   }
 });
