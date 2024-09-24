@@ -149,23 +149,26 @@
         formData.append('material', this.newItem.material);
         formData.append('image', this.newItem.image);
         formData.append('category_id', this.newItem.category_id); // Add category_id to form data
-  
+
         try {
-          await axios.post('/clothing-items', formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          });
-          this.fetchClothingItems();
-          this.newItem = {}; // Reset form
-          const modalElement = document.getElementById('addItemModal');
-          // eslint-disable-next-line no-undef
-          const modal = bootstrap.Modal.getInstance(modalElement);
-          modal.hide();
+            await axios.post('/clothing-items', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            this.fetchClothingItems(); // Refresh the items list
+            this.newItem = {}; // Reset form fields
+
+            // Close the modal
+            const modalElement = document.getElementById('addItemModal');
+            // eslint-disable-next-line no-undef
+            const modal = bootstrap.Modal.getInstance(modalElement); // Get the modal instance
+            modal.hide(); // Hide the modal after successful submission
+
         } catch (error) {
-          console.error('Error adding clothing item:', error);
+            console.error('Error adding clothing item:', error);
         }
-      },
+    },
       navigateToEditItem(id) {
         this.$router.push({ name: 'edit-clothing-item', params: { id } });
       },

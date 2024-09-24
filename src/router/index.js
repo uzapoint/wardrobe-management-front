@@ -4,9 +4,12 @@ import ClothingItems from '../components/ClothingItems.vue';
 import AddClothingItem from '../components/AddClothingItem.vue';
 import EditClothingItem from '../components/EditClothingItem.vue';
 import ForgotPassword from '../components/ForgotPassword.vue'; 
+import UserRegister from '../components/UserRegister.vue'; 
+
 const routes = [
     { path: '/', redirect: '/login' }, // Redirect root path to login
     { path: '/login', name: 'login', component: UserLogin },
+    { path: '/register', name: 'register', component: UserRegister },
     { path: '/clothing-items', name: 'clothing-items', component: ClothingItems, meta: { requiresAuth: true } },
     { path: '/add', name: 'add-clothing-item', component: AddClothingItem, meta: { requiresAuth: true } },
     { path: '/edit/:id', name: 'edit-clothing-item', component: EditClothingItem, meta: { requiresAuth: true } },
