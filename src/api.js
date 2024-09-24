@@ -2,7 +2,7 @@ import axios from "axios";
 
 const REST_API_URL = "http://localhost:8000/api";
 
-const makeGetRequest = async (url, token = null) => {
+const makeGetRequest = async (url, token = null, params = {}) => {
 	const headers = {
 		Accept: "application/json",
 	};
@@ -12,6 +12,7 @@ const makeGetRequest = async (url, token = null) => {
 	try {
 		const response = await axios.get(url, {
 			headers,
+			params,
 		});
 
 		return response.data;
@@ -68,8 +69,8 @@ export default {
 		},
 	},
 	items: {
-		filter(token) {
-			return makeGetRequest(`${REST_API_URL}/items`, token);
+		filter(token, params = {}) {
+			return makeGetRequest(`${REST_API_URL}/items`, token, params);
 		},
 		get(token, id) {
 			return makeGetRequest(`${REST_API_URL}/items/${id}`, token);

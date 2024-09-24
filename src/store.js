@@ -60,9 +60,9 @@ export const useItemStore = defineStore("items", {
 		};
 	},
 	actions: {
-		async getItems() {
+		async getItems({ page = 1 } = {}) {
 			const auth = useAuthStore();
-			const items = await api.items.filter(auth.token);
+			const items = await api.items.filter(auth.token, { page });
 			this.items = items;
 		},
 		async getItem() {
