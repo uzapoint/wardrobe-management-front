@@ -1,7 +1,18 @@
 <script setup>
 import { defineProps } from "vue";
 import ImageComp from "./ImageComp.vue";
+import { useRouter } from "vue-router";
+import { useItemStore } from "../store";
+
+const itemStore = useItemStore();
 const props = defineProps(["item"]);
+const router = useRouter();
+
+const onView = () => router.push(`/item/${props.item.id}`);
+const onEdit = () => router.push(`/item/${props.item.id}/edit`);
+const onDelete = () => {
+  itemStore.deleteItem(props.item.id);
+};
 </script>
 
 <template>
@@ -32,15 +43,18 @@ const props = defineProps(["item"]);
         <div class="flex justify-between items-center">
           <button
             class="bg-gray-500 px-4 py-2 rounded text-white hover:bg-gray-600"
+            @click="onView"
           >
             View
           </button>
           <button
+            @click="onEdit"
             class="bg-blue-500 px-4 py-2 rounded text-white hover:bg-blue-600"
           >
             Edit
           </button>
           <button
+            @click="onDelete"
             class="bg-red-500 px-4 py-2 rounded text-white hover:bg-red-600"
           >
             Delete
