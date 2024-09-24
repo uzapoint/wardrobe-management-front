@@ -8,6 +8,7 @@
           label="Search by Name, Brand, or Material"
           append-icon="mdi-magnify"
           clearable
+          variant="outlined"
         />
       </v-col>
     </v-row>
