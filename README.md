@@ -1,4 +1,4 @@
-# 
+# Frontend for managing Wardrobe
 
 ## Project setup
 ```
@@ -10,15 +10,11 @@ npm install
 npm run serve
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
+Once our laravel backend is up and running, login with since we seeded database or register and you will be redirected to dashboard
+------------
 
-### Lints and fixes files
-```
-npm run lint
-```
+**Login Credentials**
+   - **Email**: admin@gmail.com
+   - **Password**: 12345678
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+
